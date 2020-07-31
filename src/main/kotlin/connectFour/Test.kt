@@ -63,7 +63,7 @@ class Test(var b: Board = Board()) {
                 val move = b.bestMove()
                 b = b.makeMove(move.first!!)
                 print("Best Move: ${move.first!!}")
-                println(if (b.getTurn()==0) " (black)" else " (white)")
+                println(if (b.getTurn()==0) " (Player X)" else " (Player 0)")
                 println("Depth: $depth")
                 println(b)
                 println("---------------------")
