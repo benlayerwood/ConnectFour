@@ -4,7 +4,6 @@ class Test(var b: Board = Board()) {
     //returns connectFour.Board
     fun getBoard() = b
 
-
     /*
         runs 5 critical tests
             → Test Cases are saved in Array "tests"
@@ -49,14 +48,17 @@ class Test(var b: Board = Board()) {
                                 listOf( 1, 3, 4, 5, 6, 3, 3, 0, 4, 3, 5, 1, 5 )
                         ))
         tests.forEachIndexed{index, board ->
-            println("Test ${index + 1}:")
+            println("++++++")
+            println("Test ${index + 1}")
+            println("++++++")
             println(board)
+            println("---------------------")
             var b = Board(arrayOf(board.getbitboard0(),board.getbitboard1()),
                         board.getCounter(),board.getHeight().copyOf(),board.getMoves())
             var depth = 0
             while (!b.isGameOver()){
-                if ((index == 3 && depth == 2))break
-                if ((index == 4 && depth == 4))break
+                if ((index == 3 && depth == 1))break
+                if ((index == 4 && depth == 1))break
                 depth++
                 val move = b.bestMove()
                 b = b.makeMove(move.first!!)
@@ -64,6 +66,7 @@ class Test(var b: Board = Board()) {
                 println(if (b.getTurn()==0) " (black)" else " (white)")
                 println("Depth: $depth")
                 println(b)
+                println("---------------------")
                 println()
             }
         }
@@ -102,7 +105,7 @@ class Test(var b: Board = Board()) {
     fun getRandomBoard(): Board {
         var nb = Board()
         for (i in 0..(10..26).random()) {
-            var move = 0
+            var move: Int
             if (nb.possibleMoves().all {nb.makeMove(it).isGameOver() }) break
             do {
                 move = nb.possibleMoves().random()
@@ -164,7 +167,6 @@ class Test(var b: Board = Board()) {
                 Alpha-Beta result differs from Monte-Carlo result
      */
     fun testBestMoveExamples(){
-        var b = listOf<Board>()
         var i = 0
         while (i<10){
             var board: Board

@@ -169,10 +169,10 @@ class Board(
         if (maximize){
             for (it in possibleMoves().shuffled()) {
                 val nextBoard = makeMove(it)
-                val next = nextBoard.alphaBeta(depth-1,false,al,be,cache)
                 if (nextBoard.isWinning(1)) {
                     return it to monteCarloIterations
                 }
+                val next = nextBoard.alphaBeta(depth-1,false,al,be,cache)
                 if (next.second > bestRes.second) bestRes = it to next.second
                 al = max(al,bestRes.second)
                 if (al >= be) break
@@ -187,10 +187,10 @@ class Board(
         }else{
             for (it in possibleMoves().shuffled()){
                 val nextBoard = makeMove(it)
+                if (nextBoard.isWinning(0)) return it to 0
                 val next =  nextBoard.alphaBeta(depth-1,true,al,be,cache)
                 if (next.second < bestRes.second) bestRes = null to next.second
                 be = min(be,bestRes.second)
-                if (nextBoard.isWinning(0)) return it to 0
                 if (be <= al) break
             }
             if(!cache.containsKey(symmetricBoard().getBitPair() to false))
@@ -251,8 +251,8 @@ class Board(
                 val p1 = (bitboard[0] shr n) and 1
                 val p2 = (bitboard[1] shr n) and 1
                 s += when {
-                    p1 == 1L -> "⬤ "    //White: bitboard[0]
-                    p2 == 1L -> "◯ "    //Black: bitboard[1]
+                    p1 == 1L -> "0 "    //White: bitboard[0] ⬤
+                    p2 == 1L -> "X "    //Black: bitboard[1] ◯
                     else -> ". "
                 }
             }
