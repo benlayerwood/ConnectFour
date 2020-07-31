@@ -1,0 +1,98 @@
+<!-- Header information-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css"></link>
+</head>
+<body>
+
+<h1>ConnectFour</h1>
+
+<p id="time">time ____s</p>
+
+<!-- Grid class-->
+<div class="column left">
+    <div class="grid-container">
+        <div class="grid-item-button" id="col0" onclick="sendMove(0)"></div>
+        <div class="grid-item-button" id="col1" onclick="sendMove(1)"></div>
+        <div class="grid-item-button" id="col2" onclick="sendMove(2)"></div>
+        <div class="grid-item-button" id="col3" onclick="sendMove(3)"></div>
+        <div class="grid-item-button" id="col4" onclick="sendMove(4)"></div>
+        <div class="grid-item-button" id="col5" onclick="sendMove(5)"></div>
+        <div class="grid-item-button" id="col6" onclick="sendMove(6)"></div>
+        <div class="grid-item" id="5"></div>
+        <div class="grid-item" id="12"></div>
+        <div class="grid-item" id="19"></div>
+        <div class="grid-item" id="26"></div>
+        <div class="grid-item" id="33"></div>
+        <div class="grid-item" id="40"></div>
+        <div class="grid-item" id="47"></div>
+        <div class="grid-item" id="4"></div>
+        <div class="grid-item" id="11"></div>
+        <div class="grid-item" id="18"></div>
+        <div class="grid-item" id="25"></div>
+        <div class="grid-item" id="32"></div>
+        <div class="grid-item" id="39"></div>
+        <div class="grid-item" id="46"></div>
+        <div class="grid-item" id="3"></div>
+        <div class="grid-item" id="10"></div>
+        <div class="grid-item" id="17"></div>
+        <div class="grid-item" id="24"></div>
+        <div class="grid-item" id="31"></div>
+        <div class="grid-item" id="38"></div>
+        <div class="grid-item" id="45"></div>
+        <div class="grid-item" id="2"></div>
+        <div class="grid-item" id="9"></div>
+        <div class="grid-item" id="16"></div>
+        <div class="grid-item" id="23"></div>
+        <div class="grid-item" id="30"></div>
+        <div class="grid-item" id="37"></div> 
+        <div class="grid-item" id="44"></div>
+        <div class="grid-item" id="1"></div>
+        <div class="grid-item" id="8"></div>
+        <div class="grid-item" id="15"></div>
+        <div class="grid-item" id="22"></div>
+        <div class="grid-item" id="29"></div>
+        <div class="grid-item" id="36"></div>
+        <div class="grid-item" id="43"></div>
+        <div class="grid-item" id="0"></div>
+        <div class="grid-item" id="7"></div>
+        <div class="grid-item" id="14"></div>
+        <div class="grid-item" id="21"></div>
+        <div class="grid-item" id="28"></div>
+        <div class="grid-item" id="35"></div>
+        <div class="grid-item" id="42"></div>
+    </div>
+</div>
+
+<div class="column right">  
+    <fieldset>
+        <legend><b>New Game</b></legend>
+
+        <form>
+            <label for="first">Player 1:</label>
+            <input type="radio" id="p1Human" name="first" value="human" checked>Human
+            <input type="radio" id="p1Human" name="first" value="comp">Computer<br>
+        </form>
+        <form>
+            <label for="second">Player 2:</label>
+            <input type="radio" id="p2Human" name="second" value="human">Human
+            <input type="radio" id="p2Human" name="second" value="comp" checked>Computer<br>
+        </form>
+        <input type="submit" value="Start New Game" onclick="sendNewGame()">
+    </fieldset>
+
+    <div class="game-button-container">
+        <div class="game-button" onclick="sendMove('best')">Make Best Move</div>
+        <div class="game-button" onclick="send('undoMove')">Undo Move</div>
+        <div class="game-button" onclick="send('runTests')">Run Tests</div>
+        <div class="game-status" id="compIndicator"></div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="index.js"></script>
+
+</body>
+</html>
