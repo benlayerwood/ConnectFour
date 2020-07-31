@@ -117,12 +117,12 @@ Ergebnis   |  48 |  30 |  30 |   0 |   30 | **138%**
 In diesem Abschnitt werden Details zur Engine erläutert. Der Fokus dabei liegt auf der Klasse <b>Board</b>.
 ### Basis-Implementierung des Spiels
 #### Interface Game
-Das Interface Game wird von der Klasse Board implementiert. Dieses Interface beschreibt die wichtigsten Funktionen, welche ein Spiel mit einer Implementierung für die Berechnung des bestmöglichen Zuges haben sollte. Außerdem setzt das Interface bereits voraus, das dessen des Interface immutabel sein muss. So geben die Methoden, welche das Spielbrett verändern (z.B. makeMove(),undoMove()) ein neues Game mit den geänderten Werten zurück. Außerdem sind hier bereits Funktionen vorhanden, welche mit dem Alpha-Beta-Algorithmus zusammenspielen: bestMove(), makeBestMove(), symmetricBoard(), possibleMoves().
+Das Interface Game wird von der Klasse Board implementiert. Dieses Interface beschreibt die wichtigsten Funktionen, welche ein Spiel mit einer Implementierung für die Berechnung des bestmöglichen Zuges haben sollte. Außerdem setzt das Interface bereits voraus, das dessen Implementierung immutabel sein muss. So geben die Methoden, welche das Spielbrett verändern (z.B. makeMove(),undoMove()) ein neues Game mit den geänderten Werten zurück. Außerdem sind hier bereits Funktionen vorhanden, welche mit dem Alpha-Beta-Algorithmus zusammenspielen: bestMove(), makeBestMove(), symmetricBoard(), possibleMoves().
 
 #### Klasse Board
 ##### Bitboard
 Die Klasse Board enthält die gesamte Spiellogik. Hier werden alle wichtigen Informationen zum aktuellen Spielbrett gespeichert.
-Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, dass die Information über die Position der Spielsteine in zwei Long-Werten abgespeichert sind und dass einzelne Bits dieser Werte Positionen auf dem Spielbrett widerspiegeln. Die folgende Abbildung zeigt, welche Bits beim Spiel vier Gewinnt an welcher Position stehen. Dabei ist das 0te Bit das sogenannte least significant Bit, also das erste Bit von rechts aus gesehen.
+Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, dass die Informationen über die Position der Spielsteine in zwei Long-Werten abgespeichert sind und dass einzelne Bits dieser Werte Positionen auf dem Spielbrett widerspiegeln. Die folgende Abbildung zeigt, welche Bits beim Spiel vier Gewinnt an welcher Position stehen. Dabei ist das 0te Bit das sogenannte least significant Bit, also das erste Bit von rechts aus gesehen.
 
           6 13 20 27 34 41 48   55 62     Zusätzliche Zeile
         +---------------------+
@@ -137,7 +137,7 @@ Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, das
 
 Die grundlegende Idee zur Implementierung von Bitboards, die Klassenvariablen und die dazugehörigen Methoden (makeMove(),undoMove(),possibleMoves(),isWinning(player)) für das Spiel vier Gewinnt stammt aus dem Artikel <b>Bitboards and Connect Four</b>, welches von Dominikus Herzberg auf GitHub veröffentlicht wurde (https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md).
 
-Die beiden Bitboards sind in Klassenvariablen und werden gemeinsam in einem Array <b>bitboard</b> abgespeichert, sodass mit bitboard[0] bzw bitboard[1] darauf zugegriffen werden kann.
+Die beiden Bitboards werden gemeinsam in einem Array <b>bitboard</b> abgespeichert, sodass mit bitboard[0] bzw bitboard[1] darauf zugegriffen werden kann.
 
 ##### Klassenvariablen
 Die Klassenvariable <b>counter</b> wird bei jedem gemachten Zug (makeMove()) um 1 erhöht bzw. bei der Methode undoMove() um 1 erniedrigt. Anhand von counter kann man leicht ermitteln, welcher Spieler momentan am Zug ist. Verbindet man counter mit der logischen Verknüpfung und 1 (counter and 1), gibt es für eine gerade counter-Zahl 0 zurück (Spieler 0) und für jede ungerade Zahl 1 (Spieler 1).
@@ -181,7 +181,7 @@ Diese Funktion spielt auf einer Kopie des aktuellen Board-Objektes zufällige Z�
 In dieser Methode wird playRandomGame() nacheinander aufgerufen. Wie oft sie aufgerufen wird, ist abhängig von der klassenweiten Variable <b>monteCarloIterations</b>, welche die Anzahl an Durchläufen festlegt. Das Anpassen dieser Zahl wirkt sich einerseits auf die Genauigkeit der Monte-Carlo-Bewertung, andererseits auf die Laufzeit aus. Wird ein hoher Wert (z.B. 1000) gewählt, ist die Genauigkeit der Bewertung gegeben, die Zeit zur Berechnung der ersten Züge kann dann jedoch mehr als 4 Sekunden dauern. Ist der Wert niedrig (z.B. 100), ist die Zeit für die Ermittlung des besten Zuges niedrig, die Qualität des besten Zuges lässt dann aber nach. Wird der Alpha-Beta-Algorithmus mit einer Tiefe von 4 gespielt, ist ein Wert im Bereich 300 bis 500 gut geeignet. Die Methode simulateGames() zählt letztendlich die Niederlagen von Spieler 1 bzw. die Siege von Spieler 0. Liegt bei der aktuellen Position bereits ein Gewinn für Spieler 1 vor, gibt die Methode den Wert der Variable monteCarloIterations zurück.
 
 * #### evaluateMoves()
-Diese Methode führt für den aktuellen Spieler alle möglichen Züge aus und ruft für das sich daraus ergebende Board die Methode simulateGames() auf. Es werden also für die jeweilige generierte Spielstellung (nach Ausführen des Zuges) die Niederlagen vom Gegner gezählt. Als Ergebnis liefert die Methode die Anzahl an Siegen nach jeweiligen Ausführen aller möglichen Züge. Dieses Ergebnis wird in Form einer Liste gespeichert, welche Werte vom Datentyp Pair enthält. Der erste Wert in der Pair ist der gewählte Zug, der zweite Wert ist die Anzahl an Siegen.
+Diese Methode führt für den aktuellen Spieler alle möglichen Züge aus und ruft für das sich daraus ergebende Board die Methode simulateGames() auf. Es werden also für die jeweilige generierte Spielstellung (nach Ausführen des Zuges) die Niederlagen vom Gegner gezählt. Als Ergebnis liefert die Methode die Anzahl an Siegen nach jeweiligem Ausführen aller möglichen Züge. Dieses Ergebnis wird in Form einer Liste gespeichert, welche Werte vom Datentyp Pair enthält. Der erste Wert in der Pair ist der gewählte Zug, der zweite Wert ist die Anzahl an Siegen.
 Der Durchschnittswert, welcher in der Methode <B>averageBoard()</b> die Werte aus evaluateMoves() verwendet, bildet die Bewertungsfunktion für den Alpha-Beta-Algorithmus.
 
 
@@ -212,7 +212,7 @@ Die Methode <b>alphaBeta</b> wird von der Methode <b>bestMove</b> aufgerufen und
 
 Beim Aufruf von alphaBeta innerhalb der Funktion bestMove() gibt es nun zwei Fälle:
 1. Spieler 1 ist am Zug → Rufe Alpha-Beta auf
-2. Spieler 0 ist am Zug → Invertiere das Spielbrett und rufe dann Alpha-Beta auf
+2. Spieler 0 ist am Zug → Invertiere das Spielbrett und rufe dann Alpha-Beta auf.
 Das Board wird im zweiten Fall deshalb invertiert, weil der Alpha-Beta-Algorithmus so konzipiert wurde, dass er <b>immer</b> aus der Sicht von Spieler 1 spielt.
 
 #### Parameter
@@ -279,6 +279,9 @@ Die Tests werden wie folgt ausgeführt: In der Oberfläche auf den Button "Run T
 Gewinn umsetzen lässt (Sichttiefe 4)
 
 Bei den Tests 1 bis 3 werden jeweils die besten Züge gegeneinander ausgespielt bis das Spiel vorbei ist. Bei den Tests 4 und 5 wird jeweils nur ein Zug angezeigt.
+
+Beim Test Nr. 2 zu beachten, dass es mehrere mögliche beste Züge gibt.
+Hier kann der beste Zug entweder 3 oder 6 sein, da die Engine in beiden Fällen im übernächsten Zug gewinnt.
 
 Die Testausführung protokolliert sich über die Konsole wie folgt:
 
