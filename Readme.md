@@ -5,6 +5,47 @@ Autor: Benjamin Schichtholz (5097555)
 Ich habe die Zulassung für PiS im SoSe 2020 bei Herrn Herzberg erhalten.
 
 ----
+## Inhaltsverzeichnis
+- [Vier Gewinnt (PiS, SoSe 2020)](#vier-gewinnt--pis--sose-2020-)
+  * [Einleitung](#einleitung)
+    + [Spielregeln](#spielregeln)
+    + [Bedienungsanleitung](#bedienungsanleitung)
+      - [Screenshot](#screenshot)
+      - [Oberfläche](#oberfl-che)
+      - [Spielmodi](#spielmodi)
+  * [Dateiübersicht](#datei-bersicht)
+  * [Engine](#engine)
+    + [Basis-Implementierung des Spiels](#basis-implementierung-des-spiels)
+      - [Interface Game](#interface-game)
+      - [Klasse Board](#klasse-board)
+        * [Bitboard](#bitboard)
+        * [Klassenvariablen](#klassenvariablen)
+        * [Methoden](#methoden)
+        * [Symmetrisches Board](#symmetrisches-board)
+    + [Klasse Test](#klasse-test)
+    + [Monte-Carlo](#monte-carlo)
+      - [playRandomGame()](#playrandomgame--)
+      - [simulateGames()](#simulategames--)
+      - [evaluateMoves()](#evaluatemoves--)
+    + [Alpha-Beta](#alpha-beta)
+      - [Allgemeines](#allgemeines)
+      - [Parameter](#parameter)
+      - [Algorithmus](#algorithmus)
+  * [Testfälle](#testf-lle)
+  * [Technische Umsetzung der Oberfläche](#technische-umsetzung-der-oberfl-che)
+    + [HTML](#html)
+    + [CSS](#css)
+    + [JavaScript](#javascript)
+      - [Spielzug durchführen](#spielzug-durchf-hren)
+      - [Neues Spiel Starten](#neues-spiel-starten)
+      - [HTML-Response verarbeiten](#html-response-verarbeiten)
+      - [Board anzeigen](#board-anzeigen)
+    + [Server (App.kt)](#server--appkt-)
+      - [Bitboard in String umwandeln](#bitboard-in-string-umwandeln)
+      - [Zeit zum Berechnen des besten Zuges ausgeben](#zeit-zum-berechnen-des-besten-zuges-ausgeben)
+  * [Hinweise](#hinweise)
+
+----
 
 ## Einleitung
 
@@ -81,7 +122,7 @@ Das Interface Game wird von der Klasse Board implementiert. Dieses Interface bes
 #### Klasse Board
 ##### Bitboard
 Die Klasse Board enthält die gesamte Spiellogik. Hier werden alle wichtigen Informationen zum aktuellen Spielbrett gespeichert.
-Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, dass die Information über die Position der Spielsteine in zwei Long-Werten abgespeichert sind und dass einzelne Bits dieser Werte Positionen auf dem Spielbrett widerspiegeln. Die folgende Abbildung zeigt, welche Bits beim Spiel Vier Gewinnt an welcher Position stehen. Dabei ist das 0te Bit das sogenannte least significant Bit, also das erste Bit von rechts aus gesehen.
+Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, dass die Information über die Position der Spielsteine in zwei Long-Werten abgespeichert sind und dass einzelne Bits dieser Werte Positionen auf dem Spielbrett widerspiegeln. Die folgende Abbildung zeigt, welche Bits beim Spiel vier Gewinnt an welcher Position stehen. Dabei ist das 0te Bit das sogenannte least significant Bit, also das erste Bit von rechts aus gesehen.
 
           6 13 20 27 34 41 48   55 62     Zusätzliche Zeile
         +---------------------+
@@ -94,7 +135,7 @@ Das Spielbrett wird in zwei sogenannten Bitboards abgespeichert. Das heißt, das
         +---------------------+
         (Abbildung Bitboard)
 
-Die grundlegende Idee zur Implementierung von Bitboards, die Klassenvariablen und die dazugehörigen Methoden (makeMove(),undoMove(),possibleMoves(),isWinning(player)) für das Spiel Vier Gewinnt stammt aus dem Artikel <b>Bitboards and Connect Four</b>, welches von Dominikus Herzberg auf GitHub veröffentlicht wurde (https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md).
+Die grundlegende Idee zur Implementierung von Bitboards, die Klassenvariablen und die dazugehörigen Methoden (makeMove(),undoMove(),possibleMoves(),isWinning(player)) für das Spiel vier Gewinnt stammt aus dem Artikel <b>Bitboards and Connect Four</b>, welches von Dominikus Herzberg auf GitHub veröffentlicht wurde (https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md).
 
 Die beiden Bitboards sind in Klassenvariablen und werden gemeinsam in einem Array <b>bitboard</b> abgespeichert, sodass mit bitboard[0] bzw bitboard[1] darauf zugegriffen werden kann.
 
@@ -128,7 +169,7 @@ Innerhalb der Test-Klasse können die 5 geforderten Tests mit der Methode <b>run
 Bei der Entwicklung der Engine war Sinn und Zweck der Test-Klasse, die Funktionalität und Korrektheit der Engine zu überprüfen. Deshalb sind hier diverse Methoden vorhanden, welche Werte auf die Konsole schreiben.
 
 Zusätzlich kann die Test-Klasse mit der Methode testBestMoveExamples() "kritische" Testfälle generieren. Die Methode spielt zufällige Züge, bis der Alpha-Beta ein anderes Ergebnis vorweist im Vergleich zum besten Zug der Monte-Carlo-Methode. Dadurch werden die "einfachen Beispiele" meist herausgefiltert, z.B. solche Beispiele, bei welchen der Spieler im nächsten Zug gewinnen kann.
-Mit der Methode <b>playAlphaBeta()</b> kann man den Alpha-Beta gegen sich selbst spielen lassen und den Fortschritt auf der Konstole überprüfen, während man mit der Methode <b>playAgainstAlphaBeta()</b> selbst gegen den Alpha-Beta spielen kann.
+Mit der Methode <b>playAlphaBeta()</b> kann man den Alpha-Beta gegen sich selbst spielen lassen und den Fortschritt auf der Konsole überprüfen, während man mit der Methode <b>playAgainstAlphaBeta()</b> selbst gegen den Alpha-Beta spielen kann.
 
 ### Monte-Carlo
 Für die Monte-Carlo-Implementierung, wurden Ideen aus dem Video "Die Monte Carlo Tree Search" (https://www.youtube.com/watch?v=CjldSexfOuU), welches von Dominikus Herzberg produziert wurde, übernommen. Der Kern der Implementierung besteht aus den drei Funktionen playRandomGame(), simulateGames() und evaluateMoves().
@@ -455,7 +496,7 @@ Auf der rechten Seite wurden beim New-Game-Bereich nur optische und farbliche An
 Durch den JavaScript-Anteil wird die Oberfläche interaktiv und kann mit dem Kotlin-Backend kommunizieren.
 #### Spielzug durchführen
 Wird eines der Dreiecke angeklickt, wird die <b>sendMove(field)</b>-Funktion aufgerufen. Übergeben wird die jeweilige Spalte. 
-Die Funktion <b>activate_Buttons(b)</b> aktiviert oder deaktiviert die Dreiecke, mit welchen man die Spalte auswählen kann. Wird der beste Zug angefordert, werden die Dreicks-Schaltflächen gesperrt, damit der Computer seinen Zug ermitteln kann. Nach Erhalt der Antwort werden die Schaltflächen wieder mit activate_Buttons(true) aktiviert.
+Die Funktion <b>activate_Buttons(b)</b> aktiviert oder deaktiviert die Dreiecke, mit welchen man die Spalte auswählen kann. Wird der beste Zug angefordert, werden die Dreiecks-Schaltflächen gesperrt, damit der Computer seinen Zug ermitteln kann. Nach Erhalt der Antwort werden die Schaltflächen wieder mit activate_Buttons(true) aktiviert.
 Wann immer der Computer seinen besten Zug berechnet, wird in der Statusanzeige "computer is generating move" angezeigt. Dafür wird in der Funktion <b>setIndicator(s)</b> der Inhalt des Element mit der id "compIndicator" verändert.
 Eine globale Variable namens <b>getBestMoveReturn</b> wird gesetzt, falls nach Erhalten des HTML-Requests ein weiterer angefordert werden soll.
 An sendMove wird übergeben:
@@ -491,7 +532,7 @@ Soll auf dem Board der beste Zug ausgeführt werden, wird die Funktion <b>getBes
 * Den besten Zug
 * Die Zeit zum Berechnen des besten Zuges
 
-Um die Zeit zu ermitteln, wurde die Kotlin-eigene Funktion "measureNanoTime" verwendet. Zurückgegeben wird dieser Wert multipiliziert mit 10^(-9) und auf die dritte Nachkommastelle abgerundet.
+Um die Zeit zu ermitteln, wurde die Kotlin-eigene Funktion "measureNanoTime" verwendet. Zurückgegeben wird dieser Wert multipliziert mit 10^(-9) und auf die dritte Nachkommastelle abgerundet.
 
 ## Hinweise
 * Die Alpha-Beta-Funktion gibt nur korrekte Werte zurück, wenn die Tiefe eine gerade Zahl ist. Vermutlich hängt es damit zusammen, dass der Alpha-Beta nur aus der Sicht eines Spielers funktioniert.

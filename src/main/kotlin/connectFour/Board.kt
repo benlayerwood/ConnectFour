@@ -11,7 +11,7 @@ class Board(
     private val moves: List<Int> = listOf()
 ): Game {
     //specifies number of monte Carlo Iterations
-    private val monteCarloIterations = 500
+    private val monteCarloIterations = 400
 
     //getters
     fun getCounter() = counter
