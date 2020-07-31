@@ -1,7 +1,11 @@
+import connectFour.Board
 import connectFour.Test
 
 fun main() {
-    val t = Test()
-    //t.testBestMoveExamples()
-    t.runTests()
+    val b = Test().getRandomBoard()
+
+    println(b)
+    println(b.getTurn())
+    val res = b.evaluateMoves()
+    println(res)
 }

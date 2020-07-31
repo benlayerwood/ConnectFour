@@ -200,7 +200,7 @@ class Board(
     }
 
     //Monte-Carlo-Result(List)
-    private fun evaluateMoves() = possibleMoves().
+    fun evaluateMoves() = possibleMoves().
         fold(listOf<Pair<Int,Int>>())
         {acc, move -> acc.plus(move to makeMove(move).simulateGames()) }
 
